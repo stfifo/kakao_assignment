@@ -1,0 +1,199 @@
+/* ── 리셋 & 기본 설정 ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background-color: #f5f5f7;
+  color: #1a1a1a;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 60px 16px;
+}
+
+/* ── 레이아웃 컨테이너 ── */
+.container {
+  width: 100%;
+  max-width: 560px;
+}
+
+/* ── 앱 타이틀 ── */
+.app-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #672be0;
+  margin-bottom: 28px;
+  letter-spacing: -0.5px;
+}
+
+/* ── 입력 영역 ── */
+.input-section {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.todo-input {
+  flex: 1;
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.2s;
+  background: #fff;
+}
+
+.todo-input:focus {
+  border-color: #672be0;
+}
+
+/* ── 버튼 공통 ── */
+.btn {
+  padding: 10px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+  white-space: nowrap;
+}
+
+.btn:active {
+  transform: scale(0.96);
+}
+
+/* 메인 컬러 버튼 */
+.btn-primary {
+  background-color: #672be0;
+  color: #fff;
+  padding: 10px 20px;
+}
+
+.btn-primary:hover {
+  opacity: 0.88;
+}
+
+/* 완료 버튼 */
+.btn-complete {
+  background-color: #ede8fb;
+  color: #672be0;
+}
+
+.btn-complete:hover {
+  background-color: #ddd3f7;
+}
+
+/* 수정 버튼 */
+.btn-edit {
+  background-color: #f0f0f0;
+  color: #444;
+}
+
+.btn-edit:hover {
+  background-color: #e3e3e3;
+}
+
+/* 삭제 버튼 */
+.btn-delete {
+  background-color: #fdecea;
+  color: #d32f2f;
+}
+
+.btn-delete:hover {
+  background-color: #f9d0cd;
+}
+
+/* 저장 버튼 (수정 모드) */
+.btn-save {
+  background-color: #672be0;
+  color: #fff;
+}
+
+.btn-save:hover {
+  opacity: 0.88;
+}
+
+/* 취소 버튼 (수정 모드) */
+.btn-cancel {
+  background-color: #f0f0f0;
+  color: #444;
+}
+
+.btn-cancel:hover {
+  background-color: #e3e3e3;
+}
+
+/* ── 에러 메시지 ── */
+.error-message {
+  font-size: 0.82rem;
+  color: #d32f2f;
+  margin-bottom: 14px;
+  padding-left: 4px;
+}
+
+.hidden {
+  display: none;
+}
+
+/* ── Todo 목록 ── */
+.todo-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* ── Todo 항목 ── */
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 1px solid #ebebeb;
+  border-radius: 12px;
+  padding: 14px 16px;
+  transition: box-shadow 0.2s;
+}
+
+.todo-item:hover {
+  box-shadow: 0 2px 10px rgba(103, 43, 224, 0.08);
+}
+
+/* 완료 상태 항목 */
+.todo-item.completed .todo-text {
+  text-decoration: line-through;
+  color: #aaa;
+}
+
+/* Todo 텍스트 */
+.todo-text {
+  flex: 1;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+/* 수정 모드 인풋 */
+.edit-input {
+  flex: 1;
+  padding: 6px 10px;
+  font-size: 0.95rem;
+  border: 2px solid #672be0;
+  border-radius: 7px;
+  outline: none;
+  background: #faf8ff;
+}
+
+/* 버튼 그룹 */
+.todo-actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}

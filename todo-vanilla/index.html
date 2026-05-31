@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Todo App</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1 class="app-title">Todo</h1>
+
+    <!-- 입력 영역 -->
+    <div class="input-section">
+      <input
+        type="text"
+        id="todoInput"
+        class="todo-input"
+        placeholder="할 일을 입력하세요"
+      />
+      <button id="addButton" class="btn btn-primary">추가</button>
+    </div>
+
+    <!-- 빈 입력값 안내 메시지 -->
+    <p id="errorMessage" class="error-message hidden">할 일을 입력해 주세요.</p>
+
+    <!-- Todo 목록 -->
+    <ul id="todoList" class="todo-list"></ul>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
