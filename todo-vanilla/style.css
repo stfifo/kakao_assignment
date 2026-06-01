@@ -30,6 +30,51 @@ body {
   letter-spacing: -0.5px;
 }
 
+/* ── 날짜 네비게이션 ── */
+.date-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border: 1px solid #ebebeb;
+  border-radius: 12px;
+  padding: 10px 16px;
+  margin-bottom: 20px;
+}
+
+.date-nav-label {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  letter-spacing: -0.3px;
+}
+
+/* 오늘 날짜일 때 메인 컬러로 강조 */
+.date-nav-label.is-today {
+  color: #672be0;
+}
+
+.date-nav-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  line-height: 1;
+  color: #888;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.date-nav-btn:hover {
+  background: #f0ebff;
+  color: #672be0;
+}
+
 /* ── 입력 영역 ── */
 .input-section {
   display: flex;

@@ -1,11 +1,14 @@
 // ── DOM 요소 참조 ──
-const todoInput    = document.getElementById('todoInput');
-const addButton    = document.getElementById('addButton');
-const todoList     = document.getElementById('todoList');
-const errorMessage = document.getElementById('errorMessage');
-const tabItems     = document.querySelectorAll('.tab-item');
+const todoInput        = document.getElementById('todoInput');
+const addButton        = document.getElementById('addButton');
+const todoList         = document.getElementById('todoList');
+const errorMessage     = document.getElementById('errorMessage');
+const tabItems         = document.querySelectorAll('.tab-item');
+const prevDateButton   = document.getElementById('prevDateButton');
+const nextDateButton   = document.getElementById('nextDateButton');
+const currentDateLabel = document.getElementById('currentDateLabel');
 
-// 전체 Todo 데이터를 담는 배열 (id, text, completed 필드)
+// 전체 Todo 데이터를 담는 배열 (id, text, completed, date 필드)
 let todos = [];
 
 // 각 Todo에 고유 id를 부여하기 위한 카운터
@@ -13,6 +16,54 @@ let nextId = 1;
 
 // 현재 선택된 필터 상태 ('all' | 'active' | 'completed')
 let currentFilter = 'all';
+
+// 현재 선택된 날짜 (Date 객체). 앱 시작 시 오늘로 초기화
+let currentDate = new Date();
+
+// ── 날짜 유틸 ──
+
+// Date 객체를 'YYYY-MM-DD' 문자열로 변환 (Todo 저장 / 비교에 사용)
+function toDateKey(date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+// 오늘 날짜인지 확인
+function isToday(date) {
+  return toDateKey(date) === toDateKey(new Date());
+}
+
+// 화면에 표시할 날짜 문자열 반환 ('M월 D일 (요일)', 오늘이면 '오늘' 접두사 추가)
+function formatDateLabel(date) {
+  const days = ['일', '월', '화', '수', '목', '금', '토'];
+  const m    = date.getMonth() + 1;
+  const d    = date.getDate();
+  const day  = days[date.getDay()];
+  const base = `${m}월 ${d}일 (${day})`;
+  return isToday(date) ? `오늘 · ${base}` : base;
+}
+
+// ── 날짜 네비게이션 렌더링 ──
+function renderDateNav() {
+  currentDateLabel.textContent = formatDateLabel(currentDate);
+  // 오늘이면 메인 컬러로 강조
+  currentDateLabel.classList.toggle('is-today', isToday(currentDate));
+}
+
+// 날짜를 하루 앞뒤로 이동
+function moveToPrevDate() {
+  currentDate.setDate(currentDate.getDate() - 1);
+  renderDateNav();
+  renderTodos();
+}
+
+function moveToNextDate() {
+  currentDate.setDate(currentDate.getDate() + 1);
+  renderDateNav();
+  renderTodos();
+}
 
 // ── Todo 추가 ──
 function addTodo() {
@@ -27,7 +78,8 @@ function addTodo() {
 
   errorMessage.classList.add('hidden');
 
-  const newTodo = { id: nextId++, text, completed: false };
+  // 현재 선택된 날짜를 'YYYY-MM-DD' 형태로 함께 저장
+  const newTodo = { id: nextId++, text, completed: false, date: toDateKey(currentDate) };
   todos.push(newTodo);
 
   todoInput.value = '';
@@ -95,18 +147,21 @@ function saveEdit(id) {
   renderTodos();
 }
 
-// ── 현재 필터에 맞는 Todo 목록만 반환 ──
+// ── 현재 날짜 + 필터에 맞는 Todo 목록 반환 ──
 function getFilteredTodos() {
-  if (currentFilter === 'active')    return todos.filter(t => !t.completed);
-  if (currentFilter === 'completed') return todos.filter(t =>  t.completed);
-  return todos; // 'all'
+  // 먼저 선택된 날짜의 Todo만 추림
+  const todayTodos = todos.filter(t => t.date === toDateKey(currentDate));
+
+  // 그 중에서 상태 필터 적용
+  if (currentFilter === 'active')    return todayTodos.filter(t => !t.completed);
+  if (currentFilter === 'completed') return todayTodos.filter(t =>  t.completed);
+  return todayTodos; // 'all'
 }
 
 // ── 필터 탭 전환 ──
 function switchTab(filter) {
   currentFilter = filter;
 
-  // 모든 탭에서 active 클래스를 제거하고 선택된 탭에만 부여
   tabItems.forEach(tab => {
     tab.classList.toggle('active', tab.dataset.filter === filter);
   });
@@ -120,10 +175,9 @@ function renderTodos() {
 
   const filteredTodos = getFilteredTodos();
 
-  // 필터 결과가 없을 때 안내 문구 표시
   if (filteredTodos.length === 0) {
     const emptyMsg = {
-      all:       '할 일을 추가해 보세요!',
+      all:       '이 날의 할 일을 추가해 보세요!',
       active:    '진행 중인 할 일이 없어요.',
       completed: '완료된 할 일이 없어요.',
     };
@@ -168,10 +222,13 @@ todoInput.addEventListener('keydown', e => {
   if (e.key === 'Enter') addTodo();
 });
 
-// 탭 클릭 시 해당 필터로 전환
 tabItems.forEach(tab => {
   tab.addEventListener('click', () => switchTab(tab.dataset.filter));
 });
 
-// 초기 렌더링
+prevDateButton.addEventListener('click', moveToPrevDate);
+nextDateButton.addEventListener('click', moveToNextDate);
+
+// ── 초기 렌더링 ──
+renderDateNav();
 renderTodos();
