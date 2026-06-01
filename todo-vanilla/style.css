@@ -89,6 +89,15 @@ body {
   background-color: #ddd3f7;
 }
 
+.btn-back {
+  background-color: #f0f0f0;
+  color: #444;
+}
+
+.btn-back:hover {
+  background-color: #e3e3e3;
+}
+
 /* 수정 버튼 */
 .btn-edit {
   background-color: #f0f0f0;
@@ -149,7 +158,9 @@ body {
 }
 
 .tab-item {
-  padding: 8px 22px;
+  width: 80px;          /* 모든 pill 고정 너비 통일 */
+  padding: 8px 0;
+  text-align: center;
   font-size: 0.88rem;
   font-weight: 700;
   color: #999;
@@ -168,8 +179,10 @@ body {
 
 /* 선택된 탭: 메인 컬러 배경 + 흰색 텍스트 */
 .tab-item.active {
-  background: #672be0;
-  color: #fff;
+  background: #e2d9f9;
+  color: #672be0;
+  border: 1px solid #672be0;
+
 }
 
 /* ── Todo 목록 ── */

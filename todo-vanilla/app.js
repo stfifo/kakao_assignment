@@ -139,7 +139,7 @@ function renderTodos() {
     li.innerHTML = `
       <span class="todo-text">${escapeHtml(todo.text)}</span>
       <div class="todo-actions">
-        <button class="btn btn-complete" onclick="toggleComplete(${todo.id})">
+        <button class="btn ${todo.completed ? 'btn-back' : 'btn-complete'}" onclick="toggleComplete(${todo.id})">
           ${todo.completed ? '되돌리기' : '완료'}
         </button>
         <button class="btn btn-edit"   onclick="enterEditMode(${todo.id})">수정</button>
