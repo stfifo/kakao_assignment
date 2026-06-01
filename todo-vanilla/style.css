@@ -141,37 +141,35 @@ body {
   display: none;
 }
 
-/* ── 필터 탭 바 (배민 스타일) ── */
+/* ── 필터 탭 바 (pill 버튼 스타일) ── */
 .tab-bar {
   display: flex;
+  gap: 8px;
   margin-top: 24px;
-  border-bottom: 2px solid #ebebeb;
 }
 
 .tab-item {
-  flex: 1;
-  padding: 12px 0;
-  font-size: 0.95rem;
+  padding: 8px 22px;
+  font-size: 0.88rem;
   font-weight: 700;
-  color: #bbb;
-  background: none;
+  color: #999;
+  background: #efefef;
   border: none;
-  border-bottom: 3px solid transparent;
-  /* 아래 테두리가 .tab-bar의 border 위에 겹쳐 보이도록 margin 보정 */
-  margin-bottom: -2px;
+  border-radius: 999px; /* 긴 타원형 pill 모양 */
   cursor: pointer;
   letter-spacing: -0.2px;
-  transition: color 0.18s, border-color 0.18s;
+  transition: background 0.18s, color 0.18s;
 }
 
 .tab-item:hover {
+  background: #e2d9f9;
   color: #672be0;
 }
 
-/* 선택된 탭: 굵은 하단 밑줄 + 메인 컬러 텍스트 */
+/* 선택된 탭: 메인 컬러 배경 + 흰색 텍스트 */
 .tab-item.active {
-  color: #672be0;
-  border-bottom-color: #672be0;
+  background: #672be0;
+  color: #fff;
 }
 
 /* ── Todo 목록 ── */
