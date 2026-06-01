@@ -141,6 +141,39 @@ body {
   display: none;
 }
 
+/* ── 필터 탭 바 (배민 스타일) ── */
+.tab-bar {
+  display: flex;
+  margin-top: 24px;
+  border-bottom: 2px solid #ebebeb;
+}
+
+.tab-item {
+  flex: 1;
+  padding: 12px 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #bbb;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  /* 아래 테두리가 .tab-bar의 border 위에 겹쳐 보이도록 margin 보정 */
+  margin-bottom: -2px;
+  cursor: pointer;
+  letter-spacing: -0.2px;
+  transition: color 0.18s, border-color 0.18s;
+}
+
+.tab-item:hover {
+  color: #672be0;
+}
+
+/* 선택된 탭: 굵은 하단 밑줄 + 메인 컬러 텍스트 */
+.tab-item.active {
+  color: #672be0;
+  border-bottom-color: #672be0;
+}
+
 /* ── Todo 목록 ── */
 .todo-list {
   list-style: none;
@@ -148,6 +181,14 @@ body {
   flex-direction: column;
   gap: 10px;
   margin-top: 20px;
+}
+
+/* 해당 탭에 Todo가 없을 때 안내 문구 */
+.empty-message {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #bbb;
+  padding: 40px 0;
 }
 
 /* ── Todo 항목 ── */
