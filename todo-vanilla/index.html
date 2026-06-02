@@ -10,22 +10,27 @@
   <div class="container">
     <h1 class="app-title">Todo</h1>
 
-    <!-- 일간 / 주간 뷰 전환 버튼 -->
-    <div class="view-toggle">
-      <button class="view-btn active" data-view="daily">일간</button>
-      <button class="view-btn" data-view="weekly">주간</button>
-    </div>
+    <!-- 주간 뷰 (위) -->
+    <section class="weekly-section">
+      <div class="week-nav">
+        <button id="prevWeekButton" class="date-nav-btn">&#8249;</button>
+        <span id="weekLabel" class="date-nav-label"></span>
+        <button id="nextWeekButton" class="date-nav-btn">&#8250;</button>
+      </div>
+      <div id="weekGrid" class="week-grid"></div>
+    </section>
 
-    <!-- 일간 뷰 -->
-    <div id="dailyView">
-      <!-- 날짜 네비게이션 -->
+    <!-- 구분선 -->
+    <div class="section-divider"></div>
+
+    <!-- 일간 뷰 (아래) -->
+    <section class="daily-section">
       <div class="date-nav">
-        <button id="prevDateButton" class="date-nav-btn" aria-label="이전 날짜">&#8249;</button>
+        <button id="prevDateButton" class="date-nav-btn">&#8249;</button>
         <span id="currentDateLabel" class="date-nav-label"></span>
-        <button id="nextDateButton" class="date-nav-btn" aria-label="다음 날짜">&#8250;</button>
+        <button id="nextDateButton" class="date-nav-btn">&#8250;</button>
       </div>
 
-      <!-- 입력 영역 -->
       <div class="input-section">
         <input
           type="text"
@@ -36,34 +41,16 @@
         <button id="addButton" class="btn btn-primary">추가</button>
       </div>
 
-      <!-- 빈 입력값 안내 메시지 -->
       <p id="errorMessage" class="error-message hidden">할 일을 입력해 주세요.</p>
 
-      <!-- 상태 필터 탭 -->
       <div class="tab-bar">
         <button class="tab-item active" data-filter="all">전체</button>
         <button class="tab-item" data-filter="active">진행 중</button>
         <button class="tab-item" data-filter="completed">완료</button>
       </div>
 
-      <!-- Todo 목록 -->
       <ul id="todoList" class="todo-list"></ul>
-    </div>
-
-    <!-- 주간 뷰 (기본 숨김) -->
-    <div id="weeklyView" class="hidden">
-      <!-- 주간 네비게이션 -->
-      <div class="date-nav">
-        <button id="prevWeekButton" class="date-nav-btn" aria-label="이전 주">&#8249;</button>
-        <span id="weekLabel" class="date-nav-label"></span>
-        <button id="nextWeekButton" class="date-nav-btn" aria-label="다음 주">&#8250;</button>
-      </div>
-
-      <!-- 주간 그리드 (가로 스크롤 가능) -->
-      <div class="week-grid-wrapper">
-        <div id="weekGrid" class="week-grid"></div>
-      </div>
-    </div>
+    </section>
   </div>
 
   <script src="app.js"></script>
