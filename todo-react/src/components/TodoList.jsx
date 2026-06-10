@@ -1,14 +1,9 @@
 import TodoItem from './TodoItem'
-
-const EMPTY_MESSAGES = {
-  all:       '이 날의 할 일을 추가해 보세요!',
-  active:    '진행 중인 할 일이 없어요.',
-  completed: '완료된 할 일이 없어요.',
-}
+import TodoEmptyState from './TodoEmptyState'
 
 export default function TodoList({ todos, filter, onToggle, onDelete, onEdit }) {
   if (todos.length === 0) {
-    return <p className="empty-message">{EMPTY_MESSAGES[filter]}</p>
+    return <TodoEmptyState filter={filter} />
   }
   return (
     <ul className="todo-list">

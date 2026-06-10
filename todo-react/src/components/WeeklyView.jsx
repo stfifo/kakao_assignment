@@ -1,4 +1,5 @@
-import { getWeekDates, formatWeekLabel, toDateKey } from '../utils/dateUtils'
+import { getWeekDates, toDateKey } from '../utils/dateUtils'
+import WeekNav from './WeekNav'
 import WeekDayCell from './WeekDayCell'
 
 export default function WeeklyView({ weekOffset, currentDate, todos, onSelectDate, onPrevWeek, onNextWeek }) {
@@ -6,11 +7,7 @@ export default function WeeklyView({ weekOffset, currentDate, todos, onSelectDat
 
   return (
     <section className="weekly-section">
-      <div className="week-nav">
-        <button className="date-nav-btn" onClick={onPrevWeek}>&#8249;</button>
-        <span className="date-nav-label">{formatWeekLabel(dates)}</span>
-        <button className="date-nav-btn" onClick={onNextWeek}>&#8250;</button>
-      </div>
+      <WeekNav dates={dates} onPrevWeek={onPrevWeek} onNextWeek={onNextWeek} />
       <div className="week-grid">
         {dates.map((date, index) => {
           const count = todos.filter(t => t.date === toDateKey(date)).length

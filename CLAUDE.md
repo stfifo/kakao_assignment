@@ -101,15 +101,36 @@ todo-vanilla/
 
 | Vanilla 단위 | React 컴포넌트 |
 |---|---|
-| 주간 뷰 섹션 전체 | `<WeeklyView weekOffset dates onSelectDate onPrevWeek onNextWeek>` |
+| 주간 뷰 섹션 전체 | `<WeeklyView>` → `<WeekNav>` + `<WeekDayCell>` |
+| 주간 네비게이션 바 | `<WeekNav dates onPrevWeek onNextWeek>` |
 | 주간 날짜 셀 1개 | `<WeekDayCell date count isToday isSelected onClick>` |
 | 일간 날짜 네비게이션 | `<DateNav currentDate onPrev onNext>` |
 | 입력창 + 추가 버튼 | `<TodoInput onAdd>` |
 | 탭 필터 바 | `<FilterTabs currentFilter onSwitch>` |
-| Todo 목록 `<ul>` | `<TodoList todos onToggle onDelete onEdit>` |
-| Todo 항목 `<li>` (뷰/수정 모드) | `<TodoItem todo onToggle onDelete onEdit>` |
+| Todo 목록 `<ul>` | `<TodoList>` → `<TodoItem>` 또는 `<TodoEmptyState>` |
+| 빈 목록 안내 문구 | `<TodoEmptyState filter>` |
+| Todo 항목 컨테이너 | `<TodoItem todo onToggle onDelete onEdit>` |
+| Todo 뷰 모드 | `<TodoViewMode todo onToggle onDelete onStartEdit>` |
+| Todo 수정 모드 | `<TodoEditMode initialText onSave onCancel>` |
 
 `App.jsx`가 전역 상태를 소유하고 props/콜백으로 자식에게 전달하는 단방향 구조.
+
+### 컴포넌트 트리
+
+```
+App
+├── WeeklyView
+│   ├── WeekNav                  — 주간 이전/다음 + 레이블
+│   └── WeekDayCell × 7         — 날짜 셀 1개
+├── DateNav                      — 일간 이전/다음 + 레이블
+├── TodoInput                    — 입력창 + 추가 버튼 + 에러 메시지
+├── FilterTabs                   — 전체/진행 중/완료 탭
+└── TodoList
+    ├── TodoEmptyState           — 빈 목록 안내 문구
+    └── TodoItem × N
+        ├── TodoViewMode         — 뷰 모드: 텍스트 + 완료/수정/삭제
+        └── TodoEditMode         — 수정 모드: input + 저장/취소
+```
 
 ### 상태 관리 방식
 
@@ -125,22 +146,24 @@ useEffect(() => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
 }, [todos])
 
-// TodoItem — 수정 모드 로컬 상태
+// TodoItem — 모드 전환 로컬 상태
 const [isEditing, setIsEditing] = useState(false)
-const [editText, setEditText]   = useState(todo.text)
+
+// TodoEditMode — 수정 텍스트 로컬 상태
+const [editText, setEditText] = useState(initialText)
 ```
 
 - `todos` 변경은 항상 `setTodos(prev => ...)` 불변 업데이트로 처리
 - `localStorage` 읽기는 `useState` 초기화 함수(`() => loadFromStorage()`)에서 1회만 실행
-- `isEditing` 상태는 `TodoItem` 내부에 격리 (Vanilla의 DOM 직접 조작 대체)
+- `isEditing`은 `TodoItem`에, `editText`는 `TodoEditMode`에 격리하여 수정 모드 상태를 분리
 
 ### week-02와 달라지는 구조
 
 | 항목 | week-02 (Vanilla) | week-03 (React) |
 |------|-------------------|-----------------|
 | 렌더링 | `innerHTML` 직접 교체 + 수동 함수 호출 | 상태 변경 시 자동 리렌더링 |
-| 수정 모드 | DOM을 직접 `input`으로 교체 | `isEditing` state로 조건부 렌더 |
+| 수정 모드 | DOM을 직접 `input`으로 교체 | `TodoEditMode` 컴포넌트로 조건부 렌더 |
 | 이벤트 | `onclick="..."` 인라인 전역 함수 | props 콜백 (`onToggle`, `onDelete` 등) |
 | XSS 방어 | 수동 `escapeHtml()` | JSX가 기본으로 이스케이프 처리 |
-| 스타일 | 전역 단일 CSS | 컴포넌트별 CSS 모듈 또는 파일 분리 |
+| 스타일 | 전역 단일 CSS | `App.css` 단일 파일, 컴포넌트 클래스명으로 구분 |
 | 로컬스토리지 | CRUD마다 `saveTodos()` 직접 호출 | `useEffect`로 `todos` 변경 시 자동 동기화 |
