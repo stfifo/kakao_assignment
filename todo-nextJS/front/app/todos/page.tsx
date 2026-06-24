@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { getTodos, getTodosForWeek } from '@/app/actions'
 import { toDateKey, getWeekDates } from '@/app/lib/dateUtils'
 import FilterTabs from './_components/FilterTabs'
@@ -6,6 +5,7 @@ import SearchInput from './_components/SearchInput'
 import TodoItem from './_components/TodoItem'
 import DateNav from './_components/DateNav'
 import WeeklyView from './_components/WeeklyView'
+import TodoInput from './_components/TodoInput'
 
 type PageProps = {
   searchParams: Promise<{ filter?: string; search?: string; date?: string }>
@@ -57,30 +57,7 @@ export default async function TodosPage({ searchParams }: PageProps) {
         currentSearch={search}
       />
 
-      {/* 입력 영역 — 클릭 시 /todos/new 이동 (date 파라미터 포함) */}
-      <div style={{ display: 'flex', gap: 8, marginBottom: 6, flexShrink: 0 }}>
-        <Link
-          href={`/todos/new?date=${currentDate}`}
-          style={{
-            flex: 1, padding: '10px 14px', fontSize: '0.95rem',
-            border: '2px solid #e0e0e0', borderRadius: 10, background: '#fff',
-            color: '#bbb', textDecoration: 'none', display: 'flex', alignItems: 'center',
-          }}
-        >
-          할 일을 입력하세요
-        </Link>
-        <Link
-          href={`/todos/new?date=${currentDate}`}
-          style={{
-            padding: '10px 20px', fontSize: '0.85rem', fontWeight: 600,
-            background: '#672be0', color: '#fff', borderRadius: 8,
-            textDecoration: 'none', display: 'inline-flex', alignItems: 'center',
-            whiteSpace: 'nowrap',
-          }}
-        >
-          추가
-        </Link>
-      </div>
+      <TodoInput currentDate={currentDate} />
 
       <FilterTabs currentFilter={activeFilter} currentSearch={search} currentDate={currentDate} />
       <SearchInput currentFilter={activeFilter} defaultValue={search} currentDate={currentDate} />
