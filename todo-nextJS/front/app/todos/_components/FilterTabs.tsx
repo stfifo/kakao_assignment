@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter, usePathname } from 'next/navigation'
+import { buildTodosUrl } from '@/app/lib/navUtils'
 
 const TABS = [
   { value: 'all',       label: '전체' },
@@ -18,14 +19,8 @@ export default function FilterTabs({ currentFilter, currentSearch, currentDate }
   const router = useRouter()
   const pathname = usePathname()
 
-  const handleFilter = (value: string) => {
-    const params = new URLSearchParams()
-    if (currentDate) params.set('date', currentDate)
-    if (value !== 'all') params.set('filter', value)
-    if (currentSearch) params.set('search', currentSearch)
-    const query = params.toString()
-    router.push(query ? `${pathname}?${query}` : pathname)
-  }
+  const handleFilter = (filter: string) =>
+    router.push(buildTodosUrl(pathname, { date: currentDate, filter, search: currentSearch }))
 
   return (
     <div style={{ display: 'flex', gap: 8, marginTop: 12, flexShrink: 0 }}>

@@ -2,6 +2,7 @@
 
 import { useRouter, usePathname } from 'next/navigation'
 import { toDateKey, formatDateLabel } from '@/app/lib/dateUtils'
+import { buildTodosUrl } from '@/app/lib/navUtils'
 
 type Props = {
   currentDate: string
@@ -29,13 +30,8 @@ export default function DateNav({ currentDate, currentFilter, currentSearch }: P
   const router = useRouter()
   const pathname = usePathname()
 
-  const navigate = (newDate: string) => {
-    const params = new URLSearchParams()
-    params.set('date', newDate)
-    if (currentFilter !== 'all') params.set('filter', currentFilter)
-    if (currentSearch) params.set('search', currentSearch)
-    router.push(`${pathname}?${params.toString()}`)
-  }
+  const navigate = (date: string) =>
+    router.push(buildTodosUrl(pathname, { date, filter: currentFilter, search: currentSearch }))
 
   const prevDay = () => {
     const d = new Date(currentDate + 'T00:00:00')

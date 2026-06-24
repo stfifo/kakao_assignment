@@ -33,9 +33,3 @@ export async function getTodosForWeek(start: string, end: string): Promise<Todo[
   if (!res.ok) throw new Error('주간 데이터를 불러오는 데 실패했습니다')
   return res.json()
 }
-
-export async function getTodoById(id: number): Promise<Todo> {
-  const res = await fetch(`${BACKEND_URL}/todos/${id}`, { cache: 'no-store' })
-  if (!res.ok) throw new Error('할 일을 불러오는 데 실패했습니다')
-  return res.json()
-}

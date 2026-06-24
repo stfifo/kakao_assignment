@@ -2,6 +2,7 @@
 
 import { useRouter, usePathname } from 'next/navigation'
 import { toDateKey, formatWeekLabel, SHORT_DAYS } from '@/app/lib/dateUtils'
+import { buildTodosUrl } from '@/app/lib/navUtils'
 
 type Props = {
   today: string
@@ -39,13 +40,8 @@ export default function WeeklyView({
   const router = useRouter()
   const pathname = usePathname()
 
-  const navigate = (newDate: string) => {
-    const params = new URLSearchParams()
-    params.set('date', newDate)
-    if (currentFilter !== 'all') params.set('filter', currentFilter)
-    if (currentSearch) params.set('search', currentSearch)
-    router.push(`${pathname}?${params.toString()}`)
-  }
+  const navigate = (date: string) =>
+    router.push(buildTodosUrl(pathname, { date, filter: currentFilter, search: currentSearch }))
 
   const prevWeek = () => {
     const d = new Date(weekDates[0] + 'T00:00:00')
@@ -61,7 +57,6 @@ export default function WeeklyView({
 
   return (
     <div style={{ marginBottom: 8, flexShrink: 0 }}>
-      {/* WeekNav */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
         <button onClick={prevWeek} style={navBtn}>‹</button>
         <span style={{ flex: 1, textAlign: 'center', fontSize: '0.82rem', fontWeight: 600, color: '#555' }}>
@@ -70,7 +65,6 @@ export default function WeeklyView({
         <button onClick={nextWeek} style={navBtn}>›</button>
       </div>
 
-      {/* WeekDayCell × 7 */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 4 }}>
         {weekDates.map((date, i) => {
           const isSelected = date === currentDate
@@ -102,11 +96,8 @@ export default function WeeklyView({
                 fontSize: '0.88rem',
                 fontWeight: isToday ? 700 : 400,
                 color: isSelected ? '#672be0' : isToday ? '#672be0' : '#1a1a1a',
-                width: 24,
-                height: 24,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
+                width: 24, height: 24,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
                 borderRadius: '50%',
                 background: isToday && !isSelected ? '#ede8fb' : 'transparent',
               }}>
