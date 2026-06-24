@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { getTodos } from '@/app/actions'
 import FilterTabs from './_components/FilterTabs'
+import SearchInput from './_components/SearchInput'
 import TodoItem from './_components/TodoItem'
 
 type PageProps = {
@@ -49,7 +50,8 @@ export default async function TodosPage({ searchParams }: PageProps) {
         </Link>
       </div>
 
-      <FilterTabs currentFilter={activeFilter} />
+      <FilterTabs currentFilter={activeFilter} currentSearch={search} />
+      <SearchInput currentFilter={activeFilter} defaultValue={search} />
 
       <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 8, marginTop: 12, flex: 1, overflowY: 'auto', minHeight: 0, paddingLeft: 0 }}>
         {todos.length === 0 ? (

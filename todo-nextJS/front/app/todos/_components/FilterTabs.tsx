@@ -1,6 +1,6 @@
 'use client'
 
-import { useRouter, usePathname, useSearchParams } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 
 const TABS = [
   { value: 'all',       label: '전체' },
@@ -8,18 +8,19 @@ const TABS = [
   { value: 'completed', label: '완료' },
 ]
 
-export default function FilterTabs({ currentFilter }: { currentFilter: string }) {
+type Props = {
+  currentFilter: string
+  currentSearch?: string
+}
+
+export default function FilterTabs({ currentFilter, currentSearch }: Props) {
   const router = useRouter()
   const pathname = usePathname()
-  const searchParams = useSearchParams()
 
   const handleFilter = (value: string) => {
-    const params = new URLSearchParams(searchParams.toString())
-    if (value === 'all') {
-      params.delete('filter')
-    } else {
-      params.set('filter', value)
-    }
+    const params = new URLSearchParams()
+    if (value !== 'all') params.set('filter', value)
+    if (currentSearch) params.set('search', currentSearch)
     const query = params.toString()
     router.push(query ? `${pathname}?${query}` : pathname)
   }
@@ -43,7 +44,6 @@ export default function FilterTabs({ currentFilter }: { currentFilter: string })
               border: isActive ? '1px solid #672be0' : 'none',
               borderRadius: 999,
               cursor: 'pointer',
-              transition: 'background 0.18s, color 0.18s',
               fontFamily: 'inherit',
             }}
           >
