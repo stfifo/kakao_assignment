@@ -287,7 +287,7 @@ Client Component → fetch('/api/todos') → route.ts → FastAPI → SQLite
 | 2 | FastAPI CRUD API 구현 | ✅ 완료 |
 | 3 | Next.js Todo 페이지 구현 (Server/Client 컴포넌트 구분) | ✅ 완료 |
 | 4 | API Route 작성 + 프론트-백엔드 연동 | ✅ 완료 |
-| 5 | 환경변수 설정 | ⬜ 미완료 |
+| 5 | 환경변수 설정 | ✅ 완료 |
 | 6 | 서버 기반 필터링 | ⬜ 미완료 |
 | 7 | 서버 기반 검색 | ⬜ 미완료 |
 

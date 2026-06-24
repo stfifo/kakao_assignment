@@ -5,7 +5,10 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 from pydantic import BaseModel
 from typing import Optional
+from dotenv import load_dotenv
 import os
+
+load_dotenv(".env.local")
 
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./todos.db")
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
