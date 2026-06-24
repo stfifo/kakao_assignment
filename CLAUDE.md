@@ -10,6 +10,7 @@ This is a weekly Kakao assignment repo. Each week's work lives in a branch (`wee
 |------|-----------|-------|
 | 02 | *(previous branch)* | Vanilla JS Todo app |
 | 03 | `todo-react/` | React 19 + Vite |
+| 04 | `todo-nextJS/` | Next.js 16 + FastAPI |
 
 ## todo-react Commands
 
@@ -167,3 +168,88 @@ const [editText, setEditText] = useState(initialText)
 | XSS 방어 | 수동 `escapeHtml()` | JSX가 기본으로 이스케이프 처리 |
 | 스타일 | 전역 단일 CSS | `App.css` 단일 파일, 컴포넌트 클래스명으로 구분 |
 | 로컬스토리지 | CRUD마다 `saveTodos()` 직접 호출 | `useEffect`로 `todos` 변경 시 자동 동기화 |
+
+---
+
+## week-04-choijieun (Next.js + FastAPI)
+
+### 스택
+
+| Frontend | Backend |
+|----------|---------|
+| Next.js 16 + React 19 | FastAPI 0.111+ |
+| TypeScript 5 | Uvicorn |
+| Tailwind CSS 4 | SQLAlchemy 2 + SQLite |
+| App Router | Pydantic 2 |
+
+### 디렉토리 구조
+
+```
+todo-nextJS/
+  front/               — Next.js App Router 프로젝트
+    app/
+      todos/
+        page.tsx       — Todo 목록 (Server Component)
+        new/
+          page.tsx     — Todo 생성 페이지
+        [todoId]/
+          page.tsx     — Todo 수정 페이지
+        error.tsx      — 에러 화면 (Client Component)
+        loading.tsx    — 로딩 화면
+        _components/   — 클라이언트 컴포넌트들
+      api/
+        todos/
+          route.ts     — GET /api/todos, POST /api/todos
+          [id]/
+            route.ts   — PUT /api/todos/[id], DELETE /api/todos/[id]
+      actions.ts       — Server Actions (FastAPI 직접 호출)
+    .env.local         — BACKEND_URL, NEXT_PUBLIC_API_URL
+  back/                — FastAPI 프로젝트
+    main.py            — CRUD 엔드포인트, CORS 설정
+    todos.db           — SQLite DB (자동 생성)
+    .env.local         — DATABASE_URL
+    requirements.txt
+```
+
+### 명령어
+
+```bash
+# Frontend (todo-nextJS/front/)
+npm run dev       # localhost:3000
+npm run build
+npm run lint
+
+# Backend (todo-nextJS/back/)
+uvicorn main:app --reload   # localhost:8000
+# Swagger UI: localhost:8000/docs
+```
+
+### API 목록
+
+| Method | URL | 설명 |
+|--------|-----|------|
+| GET | `/todos` | 목록 조회 (`?filter=active|completed`, `?search=키워드`) |
+| POST | `/todos` | Todo 생성 |
+| PUT | `/todos/{id}` | Todo 수정 (text, completed) |
+| DELETE | `/todos/{id}` | Todo 삭제 |
+
+### 데이터 흐름
+
+```
+[Browser] → route.ts (Next.js API) → FastAPI → SQLite
+[Server Component] → actions.ts → FastAPI → SQLite
+```
+
+- 목록 조회: Server Component에서 `actions.ts`를 통해 FastAPI 직접 호출
+- 생성/수정/삭제: Client Component에서 `fetch('/api/todos')` → `route.ts` → FastAPI
+- 필터/검색: URL 파라미터(`?filter=`, `?search=`)로 관리 → FastAPI 서버에서 처리
+
+### week-03과의 차이
+
+| 항목 | week-03 (React/Vite) | week-04 (Next.js) |
+|------|----------------------|-------------------|
+| 라우팅 | 단일 페이지(SPA) | 파일 기반 라우팅 (App Router) |
+| 렌더링 | 전부 Client-side | Server/Client Component 혼합 |
+| 데이터 저장 | 로컬스토리지 | FastAPI + SQLite |
+| 상태 관리 | useState (클라이언트) | URL 파라미터 (필터/검색) |
+| 환경변수 | 불필요 | .env.local로 URL 분리 |
