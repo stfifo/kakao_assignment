@@ -11,14 +11,16 @@ const TABS = [
 type Props = {
   currentFilter: string
   currentSearch?: string
+  currentDate?: string
 }
 
-export default function FilterTabs({ currentFilter, currentSearch }: Props) {
+export default function FilterTabs({ currentFilter, currentSearch, currentDate }: Props) {
   const router = useRouter()
   const pathname = usePathname()
 
   const handleFilter = (value: string) => {
     const params = new URLSearchParams()
+    if (currentDate) params.set('date', currentDate)
     if (value !== 'all') params.set('filter', value)
     if (currentSearch) params.set('search', currentSearch)
     const query = params.toString()

@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy import create_engine, Column, Integer, String, Boolean
+from sqlalchemy import create_engine, Column, Integer, String, Boolean, inspect, text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 from pydantic import BaseModel
@@ -21,10 +21,12 @@ class Todo(Base):
     id = Column(Integer, primary_key=True, index=True)
     text = Column(String, nullable=False)
     completed = Column(Boolean, default=False)
+    date = Column(String, nullable=True)  # YYYY-MM-DD
 
 
 class TodoCreate(BaseModel):
     text: str
+    date: Optional[str] = None
 
 
 class TodoUpdate(BaseModel):
@@ -36,11 +38,20 @@ class TodoResponse(BaseModel):
     id: int
     text: str
     completed: bool
+    date: Optional[str] = None
 
     model_config = {"from_attributes": True}
 
 
 Base.metadata.create_all(bind=engine)
+
+# Migration: add date column to existing DBs without it
+with engine.connect() as conn:
+    inspector = inspect(engine)
+    columns = [c["name"] for c in inspector.get_columns("todos")]
+    if "date" not in columns:
+        conn.execute(text("ALTER TABLE todos ADD COLUMN date TEXT"))
+        conn.commit()
 
 app = FastAPI(title="Todo API")
 
@@ -73,6 +84,9 @@ def get_todo(todo_id: int, db: Session = Depends(get_db)):
 def get_todos(
     filter: Optional[str] = None,
     search: Optional[str] = None,
+    date: Optional[str] = None,
+    start: Optional[str] = None,
+    end: Optional[str] = None,
     db: Session = Depends(get_db),
 ):
     query = db.query(Todo)
@@ -82,12 +96,16 @@ def get_todos(
         query = query.filter(Todo.completed == True)
     if search:
         query = query.filter(Todo.text.contains(search))
+    if date:
+        query = query.filter(Todo.date == date)
+    elif start and end:
+        query = query.filter(Todo.date >= start, Todo.date <= end)
     return query.all()
 
 
 @app.post("/todos", response_model=TodoResponse)
 def create_todo(todo: TodoCreate, db: Session = Depends(get_db)):
-    db_todo = Todo(text=todo.text)
+    db_todo = Todo(text=todo.text, date=todo.date)
     db.add(db_todo)
     db.commit()
     db.refresh(db_todo)

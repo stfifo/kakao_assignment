@@ -6,9 +6,10 @@ import { useRouter, usePathname } from 'next/navigation'
 type Props = {
   currentFilter: string
   defaultValue?: string
+  currentDate?: string
 }
 
-export default function SearchInput({ currentFilter, defaultValue = '' }: Props) {
+export default function SearchInput({ currentFilter, defaultValue = '', currentDate }: Props) {
   const router = useRouter()
   const pathname = usePathname()
   const [value, setValue] = useState(defaultValue)
@@ -18,6 +19,12 @@ export default function SearchInput({ currentFilter, defaultValue = '' }: Props)
     setValue(defaultValue)
   }, [defaultValue])
 
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current)
+    }
+  }, [])
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const next = e.target.value
     setValue(next)
@@ -25,6 +32,7 @@ export default function SearchInput({ currentFilter, defaultValue = '' }: Props)
     if (timerRef.current) clearTimeout(timerRef.current)
     timerRef.current = setTimeout(() => {
       const params = new URLSearchParams()
+      if (currentDate) params.set('date', currentDate)
       if (currentFilter !== 'all') params.set('filter', currentFilter)
       if (next.trim()) params.set('search', next.trim())
       const query = params.toString()

@@ -15,9 +15,12 @@ const btnBase: React.CSSProperties = {
   fontFamily: 'inherit',
 }
 
-type Props = { todo?: Todo }
+type Props = {
+  todo?: Todo
+  defaultDate?: string
+}
 
-export default function TodoForm({ todo }: Props) {
+export default function TodoForm({ todo, defaultDate }: Props) {
   const router = useRouter()
   const [text, setText] = useState(todo?.text ?? '')
   const [isPending, setIsPending] = useState(false)
@@ -32,13 +35,17 @@ export default function TodoForm({ todo }: Props) {
     setError('')
     try {
       const url = isEditing ? `/api/todos/${todo.id}` : '/api/todos'
+      const body = isEditing
+        ? { text }
+        : { text, date: defaultDate }
       const res = await fetch(url, {
         method: isEditing ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text }),
+        body: JSON.stringify(body),
       })
       if (!res.ok) throw new Error('요청에 실패했습니다')
-      router.push('/todos')
+      const dest = defaultDate ? `/todos?date=${defaultDate}` : '/todos'
+      router.push(dest)
       router.refresh()
     } catch (err) {
       setError(err instanceof Error ? err.message : '오류가 발생했습니다')
