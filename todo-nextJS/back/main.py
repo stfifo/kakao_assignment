@@ -58,6 +58,14 @@ def get_db():
         db.close()
 
 
+@app.get("/todos/{todo_id}", response_model=TodoResponse)
+def get_todo(todo_id: int, db: Session = Depends(get_db)):
+    db_todo = db.query(Todo).filter(Todo.id == todo_id).first()
+    if not db_todo:
+        raise HTTPException(status_code=404, detail="Todo not found")
+    return db_todo
+
+
 @app.get("/todos", response_model=list[TodoResponse])
 def get_todos(
     filter: Optional[str] = None,

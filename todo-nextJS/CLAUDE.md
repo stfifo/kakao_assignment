@@ -167,7 +167,7 @@ main.py
 ├── TodoUpdate    — Pydantic 스키마 (수정 요청, 필드 전부 Optional)
 ├── TodoResponse  — Pydantic 스키마 (응답)
 ├── get_db()      — DB 세션 의존성 (Depends)
-└── 엔드포인트 4개  — GET / POST / PUT / DELETE
+└── 엔드포인트 5개  — GET(목록) / GET(단건) / POST / PUT / DELETE
 ```
 
 ---
@@ -203,6 +203,7 @@ Client Component에서 fetch('/api/todos', { method: 'POST', body })
 | Method | URL | 설명 |
 |--------|-----|------|
 | GET | `/todos` | 목록 조회 (`?filter=active\|completed`, `?search=키워드`) |
+| GET | `/todos/{id}` | 단건 조회 (수정 페이지용) |
 | POST | `/todos` | Todo 생성 |
 | PUT | `/todos/{id}` | Todo 수정 (text, completed) |
 | DELETE | `/todos/{id}` | Todo 삭제 |
@@ -275,6 +276,20 @@ Client Component → fetch('/api/todos') → route.ts → FastAPI → SQLite
 | *(없음)* | `_components/SearchInput.tsx` | 신규: 서버 검색 기능 |
 | *(없음)* | `app/api/todos/route.ts` | 신규: Next.js API Route |
 | *(없음)* | `actions.ts` | 신규: Server Actions |
+
+---
+
+## 진행 상태
+
+| Step | 내용 | 상태 |
+|------|------|------|
+| 1 | 초기 세팅 (Next.js + FastAPI 프로젝트) | ✅ 완료 |
+| 2 | FastAPI CRUD API 구현 | ✅ 완료 |
+| 3 | Next.js Todo 페이지 구현 (Server/Client 컴포넌트 구분) | ✅ 완료 |
+| 4 | API Route 작성 + 프론트-백엔드 연동 | ✅ 완료 |
+| 5 | 환경변수 설정 | ⬜ 미완료 |
+| 6 | 서버 기반 필터링 | ⬜ 미완료 |
+| 7 | 서버 기반 검색 | ⬜ 미완료 |
 
 ---
 
