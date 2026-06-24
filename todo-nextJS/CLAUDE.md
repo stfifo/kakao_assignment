@@ -128,6 +128,9 @@ Browser
 - 탭 필터: 전체 / 진행 중 / 완료 (URL 파라미터 `?filter=`)
 - 키워드 검색 (URL 파라미터 `?search=`)
 - 필터 + 검색 동시 적용 (`?filter=active&search=키워드`)
+- **일간 뷰**: 날짜별 Todo 목록 + DateNav (이전/다음 날짜 이동, URL `?date=`)
+- **주간 뷰**: 월~일 7칸 그리드 + WeekNav (이전/다음 주 이동)
+- **주간 배지**: 날짜 셀에 해당 날짜 Todo 개수 표시
 - 로딩 화면 (`loading.tsx`) — 데이터 fetch 중 자동 표시
 - 에러 화면 (`error.tsx`) — API 장애 시 자동 표시
 - 서버 기반 데이터 영속성 (SQLite, 새로고침 후 유지)
