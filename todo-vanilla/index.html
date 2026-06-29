@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Todo App</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1 class="app-title">Todo</h1>
+
+    <!-- 주간 뷰 (위) -->
+    <section class="weekly-section">
+      <div class="week-nav">
+        <button id="prevWeekButton" class="date-nav-btn">&#8249;</button>
+        <span id="weekLabel" class="date-nav-label"></span>
+        <button id="nextWeekButton" class="date-nav-btn">&#8250;</button>
+      </div>
+      <div id="weekGrid" class="week-grid"></div>
+    </section>
+
+    <!-- 구분선 -->
+    <div class="section-divider"></div>
+
+    <!-- 일간 뷰 (아래) -->
+    <section class="daily-section">
+      <div class="date-nav">
+        <button id="prevDateButton" class="date-nav-btn">&#8249;</button>
+        <span id="currentDateLabel" class="date-nav-label"></span>
+        <button id="nextDateButton" class="date-nav-btn">&#8250;</button>
+      </div>
+
+      <div class="input-section">
+        <input
+          type="text"
+          id="todoInput"
+          class="todo-input"
+          placeholder="할 일을 입력하세요"
+        />
+        <button id="addButton" class="btn btn-primary">추가</button>
+      </div>
+
+      <p id="errorMessage" class="error-message hidden">할 일을 입력해 주세요.</p>
+
+      <div class="tab-bar">
+        <button class="tab-item active" data-filter="all">전체</button>
+        <button class="tab-item" data-filter="active">진행 중</button>
+        <button class="tab-item" data-filter="completed">완료</button>
+      </div>
+
+      <ul id="todoList" class="todo-list"></ul>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
